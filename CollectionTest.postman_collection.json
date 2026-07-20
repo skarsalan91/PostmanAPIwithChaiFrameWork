@@ -1,0 +1,265 @@
+{
+  "info": {
+    "_postman_id": "1ab22064-bcf6-46cc-8e05-391ab8dc946e",
+    "name": "CollectionTest",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "18441508",
+    "_collection_link": "https://go.postman.co/collection/18441508-1ab22064-bcf6-46cc-8e05-391ab8dc946e?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "GetRequestProducts",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"status of the response is 200\", () =>\r",
+              "{\r",
+              "    pm.response.to.have.status(200)\r",
+              "}\r",
+              " )\r",
+              " pm.test(\"Present of the Header Content type\"),() =>\r",
+              " {\r",
+              "     pm.response.to.have.header(\"content-type\");\r",
+              " }\r",
+              "\r",
+              " pm.test(\"Present of header content\"), () =>\r",
+              " {\r",
+              "         pm.expect(pm.response.headers.get(\"content-type\")).to.eql(\"application/json\")\r",
+              " }\r",
+              " pm.test(\"Response time is as expected below 300 kb\"),() =>\r",
+              " {\r",
+              "pm.expect(pm.response.responseTime).to.be.below(300)\r",
+              " }\r",
+              " pm.test(\"File size is as expected i.e below 50 kb\"), () =>\r",
+              " {\r",
+              "    pm.expect(pm.response.size).to.be.below(50)\r",
+              " }"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://dummyjson.com/products",
+          "protocol": "https",
+          "host": [
+            "dummyjson",
+            "com"
+          ],
+          "path": [
+            "products"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "PostRequest",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Data is created\", () =>\r",
+              "{\r",
+              "    pm.response.to.have.status(201)\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"title\": \"Function Testing\",\r\n  \"body\": \"Learning Postman and Database\",\r\n  \"userId\": 2\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://jsonplaceholder.typicode.com/posts",
+          "protocol": "https",
+          "host": [
+            "jsonplaceholder",
+            "typicode",
+            "com"
+          ],
+          "path": [
+            "posts"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "SchemaTest",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "var jsonData = pm.response.json();\r",
+              "var Ajv = require('ajv');\r",
+              "var ajv = new Ajv();\r",
+              "schema = {\r",
+              "  \"type\": \"array\",\r",
+              "  \"items\": {\r",
+              "    \"type\": \"object\",\r",
+              "    \"properties\": {\r",
+              "      \"id\": {\r",
+              "        \"type\": \"integer\"\r",
+              "      },\r",
+              "      \"title\": {\r",
+              "        \"type\": \"string\"\r",
+              "      },\r",
+              "      \"price\": {\r",
+              "        \"type\": \"number\"\r",
+              "      },\r",
+              "      \"description\": {\r",
+              "        \"type\": \"string\"\r",
+              "      },\r",
+              "      \"category\": {\r",
+              "        \"type\": \"string\"\r",
+              "      },\r",
+              "      \"image\": {\r",
+              "        \"type\": \"string\",\r",
+              "        \"format\": \"uri\"\r",
+              "      },\r",
+              "      \"rating\": {\r",
+              "        \"type\": \"object\",\r",
+              "        \"properties\": {\r",
+              "          \"rate\": {\r",
+              "            \"type\": \"number\"\r",
+              "          },\r",
+              "          \"count\": {\r",
+              "            \"type\": \"integer\"\r",
+              "          }\r",
+              "        },\r",
+              "        \"required\": [\r",
+              "          \"rate\",\r",
+              "          \"count\"\r",
+              "        ]\r",
+              "      }\r",
+              "    },\r",
+              "    \"required\": [\r",
+              "      \"id\",\r",
+              "      \"title\",\r",
+              "      \"price\",\r",
+              "      \"description\",\r",
+              "      \"category\",\r",
+              "      \"image\",\r",
+              "      \"rating\"\r",
+              "    ]\r",
+              "  }\r",
+              "};\r",
+              "pm.test(\"Schema is verified\"), () =>\r",
+              "{\r",
+              "    pm.expect(ajv.validate(schema, jsonData)).to.be.true;\r",
+              "}"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://fakestoreapi.com/products",
+          "protocol": "https",
+          "host": [
+            "fakestoreapi",
+            "com"
+          ],
+          "path": [
+            "products"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "DataVerification",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const jsondata = pm.response.json();\r",
+              "pm.test(\"Datatype verification for the response\"), () =>\r",
+              "{\r",
+              "    pm.expect(jsondata).to.be.an(\"object\");\r",
+              "    pm.expect(jsondata.users).to.be.an(\"array\");\r",
+              "    pm.expect(jsondata.users[0].id).to.be.a(\"number\");\r",
+              "    pm.expect(jsondata.users[0].firstName).to.be.an(\"string\");\r",
+              "}\r",
+              "\r",
+              "pm.test(\"Data verification for the response\"), () =>\r",
+              "{\r",
+              "   pm.expect(jsondata.users[0].id).to.be.eql(1);\r",
+              "   pm.expect(jsondata.users[0].lastName).to.be.eql(\"Johnson\");\r",
+              "   pm.expect(jsondata.users[0].maidenName).to.be.eql(\"Smith\");\r",
+              "   pm.expect(jsondata.users[0].hair.color).to.be.eql(\"Brown\");\r",
+              "\r",
+              "\r",
+              "}"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://dummyjson.com/users",
+          "protocol": "https",
+          "host": [
+            "dummyjson",
+            "com"
+          ],
+          "path": [
+            "users"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
